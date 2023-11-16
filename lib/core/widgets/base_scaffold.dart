@@ -19,16 +19,17 @@ class BaseScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: colors[0],
         title: Text(
           title,
           style: TextStyle(
             fontSize: 24.sp,
-            color: colors[0],
+            color: colors[1],
             fontWeight: FontWeight.w500,
           ),
         ),
       ),
-      backgroundColor: colors[1],
+      backgroundColor: colors[0],
       body: BlocProvider(
         create: (context) => ConnCubit()..init(),
         child: BlocConsumer<ConnCubit, ConnState>(
@@ -36,9 +37,14 @@ class BaseScaffold extends StatelessWidget {
             if (state.isLoading && !state.isConnected) {
               Loader.show();
             } else if (state.isConnected && !state.isLoading) {
-              Loader.show(isSuccess: true, status: '');
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    state.errorMessage,
+                  ),
+                ),
+              );
             } else {
-              Loader.show(isFailure: true, status: '');
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(

@@ -20,7 +20,7 @@ class ConnCubit extends Cubit<ConnState> {
           ConnState(
             isConnected: true,
             isLoading: false,
-            errorMessage: '',
+            errorMessage: 'Connected',
           ),
         );
       } else {
