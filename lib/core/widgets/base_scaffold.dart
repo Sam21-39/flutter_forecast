@@ -56,15 +56,10 @@ class BaseScaffold extends StatelessWidget {
             EasyLoading.dismiss();
           },
           builder: (context, state) {
-            bool opacity = state.isLoading;
             if (state.isLoading && !state.isConnected) {
               return Container();
             } else if (state.isConnected && !state.isLoading) {
-              return AnimatedOpacity(
-                opacity: opacity ? 0 : 1,
-                duration: const Duration(milliseconds: 1200),
-                child: body,
-              );
+              return body;
             }
             return Center(
               child: Text(

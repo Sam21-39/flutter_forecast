@@ -45,4 +45,42 @@ class HomeCubit extends Cubit<HomeState> {
       );
     }
   }
+
+  refresh() async {
+    emit(
+      HomeState(
+        weatherModel: WeatherModel(),
+        errorMessage: '',
+        isLoading: true,
+      ),
+    );
+    try {
+      final res = await Apis.getWeather();
+      if (res.error ?? false) {
+        emit(
+          HomeState(
+            weatherModel: res,
+            errorMessage: res.reason!,
+            isLoading: false,
+          ),
+        );
+      }
+      emit(
+        HomeState(
+          weatherModel: res,
+          errorMessage: '',
+          isLoading: false,
+        ),
+      );
+    } catch (e) {
+      Log.showLog(e.toString());
+      emit(
+        HomeState(
+          weatherModel: WeatherModel(error: true, reason: e.toString()),
+          errorMessage: e.toString(),
+          isLoading: false,
+        ),
+      );
+    }
+  }
 }
