@@ -36,6 +36,7 @@ dependencies:
 
   # Services
   connectivity_plus: ^5.0.1
+  geolocator: ^10.1.0
   http: ^1.1.0
   logger: ^2.0.2+1
 

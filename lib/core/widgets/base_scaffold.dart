@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_forecast/core/services/cubit/conn_cubit.dart';
-import 'package:flutter_forecast/core/utils/loader.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class BaseScaffold extends StatelessWidget {
@@ -35,7 +35,7 @@ class BaseScaffold extends StatelessWidget {
         child: BlocConsumer<ConnCubit, ConnState>(
           listener: (context, state) {
             if (state.isLoading && !state.isConnected) {
-              Loader.show();
+              EasyLoading.show();
             } else if (state.isConnected && !state.isLoading) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
@@ -53,6 +53,7 @@ class BaseScaffold extends StatelessWidget {
                 ),
               );
             }
+            EasyLoading.dismiss();
           },
           builder: (context, state) {
             bool opacity = state.isLoading;

@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
           title: 'FlutterForecast',
           theme: ThemeData(
             colorScheme: ColorScheme.fromSeed(
-              seedColor: Colors.white,
+              seedColor: Colors.black,
             ),
             fontFamily: "NunitoSans",
             useMaterial3: true,
