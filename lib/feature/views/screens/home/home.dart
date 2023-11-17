@@ -2,19 +2,48 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_forecast/core/utils/log.dart';
+import 'package:flutter_forecast/core/utils/ui_colors.dart';
 import 'package:flutter_forecast/core/widgets/base_scaffold.dart';
 import 'package:flutter_forecast/feature/models/weather_model.dart';
 import 'package:flutter_forecast/feature/viewModels/cubit/home_cubit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
   const Home({super.key});
+
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  final location = TextEditingController(text: 'FlutterForecast');
+
+  @override
+  void initState() {
+    _getUserAddress();
+    super.initState();
+  }
+
+  _getUserAddress() async {
+    final Position position = await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.best,
+    );
+    List<Placemark> placemarks = await placemarkFromCoordinates(
+      position.latitude,
+      position.longitude,
+    );
+    Log.showLog(placemarks.toString());
+    location.text = placemarks.first.name.toString();
+    // setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
     return BaseScaffold(
-      title: 'FlutterForecast',
+      title: location,
       colors: _colors(),
       body: BlocProvider(
         create: (context) => HomeCubit()..init(),
@@ -31,47 +60,6 @@ class Home extends StatelessWidget {
     ];
   }
 
-  _timeFrameColors() {
-    final DateTime time = DateTime.now().toLocal();
-    Log.showLog(
-      time.toIso8601String().splitMapJoin(
-            'T',
-            onMatch: (_) => ' ',
-          ),
-    );
-
-    if (time.hour >= 0 && time.hour < 4) {
-      return [
-        Colors.black87,
-        Colors.black38,
-      ];
-    }
-    if (time.hour >= 4 && time.hour < 12) {
-      return [
-        Colors.amber.shade500,
-        Colors.amber.shade200,
-      ];
-    }
-    if (time.hour >= 12 && time.hour < 17) {
-      return [
-        Colors.deepOrange.shade400,
-        Colors.deepOrange.shade200,
-      ];
-    }
-    if (time.hour >= 17 && time.hour < 20) {
-      return [
-        Colors.lightBlueAccent.shade400,
-        Colors.lightBlueAccent.shade200,
-      ];
-    }
-    if (time.hour >= 20 && time.hour < 23) {
-      return [
-        Colors.black87,
-        Colors.black38,
-      ];
-    }
-  }
-
   _currentCard(BuildContext context, WeatherModel weatherModel) {
     return SizedBox(
       width: double.maxFinite,
@@ -80,8 +68,13 @@ class Home extends StatelessWidget {
         margin: EdgeInsets.all(16.sp),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
-          gradient: LinearGradient(
-            colors: _timeFrameColors(),
+          gradient: const LinearGradient(
+            colors: [
+              UIColors.sunlightHard,
+              UIColors.sunlightMedium,
+              UIColors.sunlight,
+              UIColors.sunlightLight,
+            ],
           ),
         ),
         child: const Column(children: []),
