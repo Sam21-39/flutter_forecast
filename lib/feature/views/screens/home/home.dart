@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -62,29 +64,70 @@ class _HomeState extends State<Home> {
     ];
   }
 
+  _timeFrame() {
+    final time = DateTime.now().toLocal();
+    if (time.hour >= 4 && time.hour < 12) {
+      return 'Morning';
+    }
+    if (time.hour >= 12 && time.hour < 13) {
+      return 'Noon';
+    }
+    if (time.hour >= 13 && time.hour < 16) {
+      return 'Afternoon';
+    }
+    if (time.hour >= 16 && time.hour < 18) {
+      return 'Early Evening';
+    }
+    if (time.hour >= 18 && time.hour < 22) {
+      return 'Night';
+    }
+    if (time.hour >= 22 && time.hour < 24) {
+      return 'Midnight';
+    }
+    if (time.hour >= 0 && time.hour < 4) {
+      return 'Post Midnight';
+    }
+    return '';
+  }
+
   _weatherUI(BuildContext context, WeatherModel weatherModel) {
-    return Row( 
+    return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       mainAxisSize: MainAxisSize.max,
-      crossAxisAlignment: CrossAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(
-          flex: 1,
-          child: Text(
-            weatherModel.current!.temperature2M.toString(),
-            style: TextStyle(
-              fontSize: 24.sp,
-              fontWeight: FontWeight.w200,
-            ),
+          flex: 2,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox.square(
+                dimension: 250.sp,
+                child: SvgPicture.asset(
+                  SUNLIGHT,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              Text(
+                _timeFrame(),
+                style: TextStyle(
+                  fontSize: 20.sp,
+                  fontWeight: FontWeight.w300,
+                  color: Colors.black87,
+                ),
+              ),
+            ],
           ),
         ),
         Expanded(
-          flex: 2,
+          flex: 1,
           child: Text(
-            WeatherCodes.codes[weatherModel.current!.weatherCode].toString(),
+            "${weatherModel.current!.temperature2M} ${weatherModel.currentUnits!.temperature2M}",
             style: TextStyle(
-              fontSize: 24.sp,
-              fontWeight: FontWeight.w200,
+              fontSize: 36.sp,
+              fontWeight: FontWeight.w600,
+              color: Colors.white,
             ),
           ),
         ),
@@ -100,8 +143,23 @@ class _HomeState extends State<Home> {
         margin: EdgeInsets.all(16.sp),
         padding: EdgeInsets.all(16.sp),
         decoration: BoxDecoration(
-          color: UIColors.sunlight,
+          gradient: const LinearGradient(
+            colors: [
+              Colors.white,
+              UIColors.overall,
+            ],
+            begin: Alignment.centerLeft,
+            end: Alignment.bottomRight,
+          ),
           borderRadius: BorderRadius.circular(8),
+          boxShadow: [
+            BoxShadow(
+              blurRadius: 2.sp,
+              offset: Offset.fromDirection(
+                2 * pi,
+              ),
+            )
+          ],
         ),
         child: Column(
           children: [

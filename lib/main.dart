@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_forecast/core/utils/ui_colors.dart';
 import 'package:flutter_forecast/feature/views/screens/home/home.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
           title: 'FlutterForecast',
           theme: ThemeData(
             colorScheme: ColorScheme.fromSeed(
-              seedColor: Colors.black,
+              seedColor: UIColors.overall,
             ),
             fontFamily: "NunitoSans",
             useMaterial3: true,
