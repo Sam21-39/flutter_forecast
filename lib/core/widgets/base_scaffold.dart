@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_forecast/core/services/cubit/conn_cubit.dart';
-import 'package:flutter_forecast/core/utils/constants.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class BaseScaffold extends StatelessWidget {
   final TextEditingController title;
@@ -26,13 +24,17 @@ class BaseScaffold extends StatelessWidget {
           controller: title,
           readOnly: true,
           selectionControls: EmptyTextSelectionControls(),
-          decoration: InputDecoration(
-            prefix: SizedBox.square(
-              dimension: 20.sp,
-              child: SvgPicture.asset(
-                LOCATION,
-              ),
-            ),
+          decoration: const InputDecoration(
+            // prefix: SizedBox.square(
+            //   dimension: 20.sp,
+            //   child: AnimatedOpacity(
+            //     duration: const Duration(milliseconds: 1200),
+            //     opacity: title.text != "FlutterForecast" ? 1 : 0,
+            //     child: SvgPicture.asset(
+            //       LOCATION,
+            //     ),
+            //   ),
+            // ),
             contentPadding: EdgeInsets.zero,
             border: InputBorder.none,
           ),

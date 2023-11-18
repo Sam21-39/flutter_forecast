@@ -64,21 +64,59 @@ class _HomeState extends State<Home> {
     ];
   }
 
+  _timeFrameColors() {
+    final time = DateTime.now().toLocal();
+    if (time.hour >= 4 && time.hour < 6) {
+      return Colors.red.shade200;
+    }
+    if (time.hour >= 6 && time.hour < 12) {
+      return Colors.lightBlue.shade300;
+    }
+    if (time.hour >= 12 && time.hour < 13) {
+      return UIColors.sunlight;
+    }
+    if (time.hour >= 13 && time.hour < 17) {
+      return Colors.deepOrange.shade400;
+    }
+    if (time.hour >= 17 && time.hour < 18) {
+      return const Color.fromARGB(255, 208, 153, 138);
+    }
+    if (time.hour >= 18 && time.hour < 20) {
+      return Colors.brown.shade400;
+    }
+    if (time.hour >= 20 && time.hour < 22) {
+      return Colors.black12;
+    }
+    if (time.hour >= 22 && time.hour < 24) {
+      return Colors.black45;
+    }
+    if (time.hour >= 0 && time.hour < 4) {
+      return Colors.blueGrey;
+    }
+    return UIColors.overall;
+  }
+
   _timeFrame() {
     final time = DateTime.now().toLocal();
-    if (time.hour >= 4 && time.hour < 12) {
+    if (time.hour >= 4 && time.hour < 6) {
+      return 'Early Morning';
+    }
+    if (time.hour >= 6 && time.hour < 12) {
       return 'Morning';
     }
     if (time.hour >= 12 && time.hour < 13) {
       return 'Noon';
     }
-    if (time.hour >= 13 && time.hour < 16) {
+    if (time.hour >= 13 && time.hour < 17) {
       return 'Afternoon';
     }
-    if (time.hour >= 16 && time.hour < 18) {
+    if (time.hour >= 17 && time.hour < 18) {
       return 'Early Evening';
     }
-    if (time.hour >= 18 && time.hour < 22) {
+    if (time.hour >= 18 && time.hour < 20) {
+      return 'Evening';
+    }
+    if (time.hour >= 20 && time.hour < 22) {
       return 'Night';
     }
     if (time.hour >= 22 && time.hour < 24) {
@@ -235,10 +273,9 @@ class _HomeState extends State<Home> {
               Text(
                 _timeFrame(),
                 style: TextStyle(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w600,
-                  color: UIColors.overall,
-                ),
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w600,
+                    color: UIColors.overall),
               ),
             ],
           ),
@@ -260,6 +297,7 @@ class _HomeState extends State<Home> {
               ),
               // if (weatherModel.current!.rain! > 0.0)
               Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   SizedBox.square(
                     dimension: 100.sp,
@@ -270,6 +308,7 @@ class _HomeState extends State<Home> {
                   ),
                   Text(
                     "${weatherModel.current!.rain} ${weatherModel.currentUnits!.rain}",
+                    textAlign: TextAlign.end,
                     style: TextStyle(
                       fontSize: 24.sp,
                       fontWeight: FontWeight.w600,
@@ -281,8 +320,8 @@ class _HomeState extends State<Home> {
                     textAlign: TextAlign.end,
                     style: TextStyle(
                       fontSize: 16.sp,
-                      fontWeight: FontWeight.w300,
-                      color: Colors.white60,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.white.withOpacity(0.65),
                     ),
                   ),
                 ],
@@ -302,14 +341,28 @@ class _HomeState extends State<Home> {
         margin: EdgeInsets.all(16.sp),
         padding: EdgeInsets.all(16.sp),
         decoration: BoxDecoration(
-          gradient: const LinearGradient(
+          gradient:
+              // Sweep Gradient instead of LinearGradient
+              SweepGradient(
+            center: const FractionalOffset(
+              0.485,
+              0.595,
+            ),
             colors: [
+              _timeFrameColors(),
               Colors.white,
               UIColors.overall,
             ],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomRight,
           ),
+          // LinearGradient(
+          //   colors: [
+          //     Colors.white,
+          //     _timeFrameColors().withOpacity(0.65),
+          //     UIColors.overall,
+          //   ],
+          //   begin: const FractionalOffset(0.4, 0.12),
+          //   end: const FractionalOffset(0.7, 0.75),
+          // ),
           borderRadius: BorderRadius.circular(8),
           boxShadow: [
             BoxShadow(
@@ -363,9 +416,10 @@ class _HomeState extends State<Home> {
         }
 
         return AnimatedSwitcher(
-          duration: const Duration(milliseconds: 1200),
+          duration: const Duration(milliseconds: 1800),
           child: !state.isLoading && state.weatherModel.error == null
               ? LiquidPullToRefresh(
+                  color: UIColors.overall,
                   animSpeedFactor: 1.8,
                   springAnimationDurationInMilliseconds: 800,
                   onRefresh: () async {
