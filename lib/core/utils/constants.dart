@@ -11,3 +11,8 @@ const URL_FIXED_PARAMS =
 const LOCATION = "assets/icons/app/location_on.svg";
 
 // ----------------------------------------------------------------
+// App icons
+const SUNLIGHT = "assets/icons/weather/2.svg";
+
+// ----------------------------------------------------------------
+

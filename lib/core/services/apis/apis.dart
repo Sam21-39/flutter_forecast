@@ -10,7 +10,7 @@ class Apis {
   static Future<WeatherModel> getWeather() async {
     try {
       final http = htp.Client();
-      final pos = await _determinePosition();
+      final pos = await determinePosition();
       final url = Uri.parse(
         "$BASE_URL?latitude=${pos.latitude}&longitude=${pos.longitude}$URL_FIXED_PARAMS",
       );
@@ -26,7 +26,7 @@ class Apis {
     }
   }
 
-  static Future<Position> _determinePosition() async {
+  static Future<Position> determinePosition() async {
     bool serviceEnabled;
     LocationPermission permission;
 
