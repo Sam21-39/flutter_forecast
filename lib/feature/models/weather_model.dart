@@ -97,6 +97,7 @@ class Current {
   double? rain;
   int? weatherCode;
   double? windSpeed10M;
+  int? humidity;
   int? windDirection10M;
 
   Current({
@@ -107,6 +108,7 @@ class Current {
     this.precipitation,
     this.rain,
     this.weatherCode,
+    this.humidity,
     this.windSpeed10M,
     this.windDirection10M,
   });
@@ -121,6 +123,7 @@ class Current {
         weatherCode: json["weather_code"],
         windSpeed10M: json["wind_speed_10m"]?.toDouble(),
         windDirection10M: json["wind_direction_10m"],
+        humidity: json["relative_humidity_2m"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -133,6 +136,7 @@ class Current {
         "weather_code": weatherCode,
         "wind_speed_10m": windSpeed10M,
         "wind_direction_10m": windDirection10M,
+        "relative_humidity_2m": humidity,
       };
 }
 
@@ -143,6 +147,7 @@ class CurrentUnits {
   String? isDay;
   String? precipitation;
   String? rain;
+  String? humidity;
   String? weatherCode;
   String? windSpeed10M;
   String? windDirection10M;
@@ -154,6 +159,7 @@ class CurrentUnits {
     this.isDay,
     this.precipitation,
     this.rain,
+    this.humidity,
     this.weatherCode,
     this.windSpeed10M,
     this.windDirection10M,
@@ -169,6 +175,7 @@ class CurrentUnits {
         weatherCode: json["weather_code"],
         windSpeed10M: json["wind_speed_10m"],
         windDirection10M: json["wind_direction_10m"],
+        humidity: json["relative_humidity_2m"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -181,6 +188,7 @@ class CurrentUnits {
         "weather_code": weatherCode,
         "wind_speed_10m": windSpeed10M,
         "wind_direction_10m": windDirection10M,
+        "relative_humidity_2m": humidity,
       };
 }
 

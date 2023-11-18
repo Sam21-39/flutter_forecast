@@ -90,31 +90,32 @@ class _HomeState extends State<Home> {
     return '';
   }
 
-  _weatherUI(BuildContext context, WeatherModel weatherModel) {
+  _wweatherDetailsUI(BuildContext context, WeatherModel weatherModel) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
       mainAxisSize: MainAxisSize.max,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(
-          flex: 2,
+          flex: 1,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
+            mainAxisSize: MainAxisSize.max,
             children: [
               SizedBox.square(
-                dimension: 250.sp,
+                dimension: 60.sp,
                 child: SvgPicture.asset(
-                  SUNLIGHT,
+                  WIND,
                   fit: BoxFit.cover,
                 ),
               ),
               Text(
-                _timeFrame(),
+                "${weatherModel.current!.windSpeed10M} ${weatherModel.currentUnits!.windSpeed10M}",
                 style: TextStyle(
-                  fontSize: 20.sp,
-                  fontWeight: FontWeight.w300,
-                  color: Colors.black87,
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w600,
+                  color: UIColors.overall,
                 ),
               ),
             ],
@@ -122,13 +123,171 @@ class _HomeState extends State<Home> {
         ),
         Expanded(
           flex: 1,
-          child: Text(
-            "${weatherModel.current!.temperature2M} ${weatherModel.currentUnits!.temperature2M}",
-            style: TextStyle(
-              fontSize: 36.sp,
-              fontWeight: FontWeight.w600,
-              color: Colors.white,
-            ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              SizedBox.square(
+                dimension: 60.sp,
+                child: SvgPicture.asset(
+                  WIND_DIRECTION,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              Text(
+                "${weatherModel.current!.windDirection10M} ${weatherModel.currentUnits!.windDirection10M}",
+                style: TextStyle(
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w600,
+                  color: UIColors.overall,
+                ),
+              ),
+            ],
+          ),
+        ),
+        Expanded(
+          flex: 1,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              SizedBox.square(
+                dimension: 60.sp,
+                child: SvgPicture.asset(
+                  HUMIDITY,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              Text(
+                "${weatherModel.current!.humidity} ${weatherModel.currentUnits!.humidity}",
+                style: TextStyle(
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w600,
+                  color: UIColors.overall,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  _currentWeatherDetailsUI(BuildContext context, WeatherModel weatherModel) {
+    return SizedBox(
+      width: double.maxFinite,
+      // height: 350.h,
+      child: Container(
+        margin: EdgeInsets.all(16.sp),
+        padding: EdgeInsets.all(16.sp),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8),
+          boxShadow: [
+            BoxShadow(
+              blurRadius: 2.sp,
+              offset: Offset.fromDirection(
+                pi / 2,
+              ),
+              color: Colors.black38,
+            )
+          ],
+        ),
+        child: Column(
+          children: [
+            _wweatherDetailsUI(context, weatherModel),
+          ],
+        ),
+      ),
+    );
+  }
+
+  _weatherUI(BuildContext context, WeatherModel weatherModel) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisSize: MainAxisSize.max,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          flex: 1,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              SizedBox.square(
+                dimension: 200.sp,
+                child: SvgPicture.asset(
+                  SUNLIGHT,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              Text(
+                "${WeatherCodes.codes[weatherModel.current!.weatherCode]}",
+                style: TextStyle(
+                  fontSize: 24.sp,
+                  fontWeight: FontWeight.w700,
+                  color: UIColors.overall,
+                ),
+              ),
+              Text(
+                _timeFrame(),
+                style: TextStyle(
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w600,
+                  color: UIColors.overall,
+                ),
+              ),
+            ],
+          ),
+        ),
+        Expanded(
+          flex: 1,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "${weatherModel.current!.temperature2M} ${weatherModel.currentUnits!.temperature2M}",
+                style: TextStyle(
+                  fontSize: 42.sp,
+                  fontWeight: FontWeight.w900,
+                  color: Colors.white,
+                ),
+              ),
+              // if (weatherModel.current!.rain! > 0.0)
+              Column(
+                children: [
+                  SizedBox.square(
+                    dimension: 100.sp,
+                    child: SvgPicture.asset(
+                      RAIN,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  Text(
+                    "${weatherModel.current!.rain} ${weatherModel.currentUnits!.rain}",
+                    style: TextStyle(
+                      fontSize: 24.sp,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white70,
+                    ),
+                  ),
+                  Text(
+                    "Last updated on \n${weatherModel.current!.time!.splitMapJoin('T', onMatch: (_) => ' ')}",
+                    textAlign: TextAlign.end,
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w300,
+                      color: Colors.white60,
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
       ],
@@ -138,7 +297,7 @@ class _HomeState extends State<Home> {
   _currentWeatherUI(BuildContext context, WeatherModel weatherModel) {
     return SizedBox(
       width: double.maxFinite,
-      height: 350.h,
+      // height: 350.h,
       child: Container(
         margin: EdgeInsets.all(16.sp),
         padding: EdgeInsets.all(16.sp),
@@ -148,7 +307,7 @@ class _HomeState extends State<Home> {
               Colors.white,
               UIColors.overall,
             ],
-            begin: Alignment.centerLeft,
+            begin: Alignment.topCenter,
             end: Alignment.bottomRight,
           ),
           borderRadius: BorderRadius.circular(8),
@@ -156,8 +315,9 @@ class _HomeState extends State<Home> {
             BoxShadow(
               blurRadius: 2.sp,
               offset: Offset.fromDirection(
-                2 * pi,
+                pi / 2,
               ),
+              color: Colors.black38,
             )
           ],
         ),
@@ -216,6 +376,10 @@ class _HomeState extends State<Home> {
                       mainAxisSize: MainAxisSize.max,
                       children: [
                         _currentWeatherUI(
+                          context,
+                          state.weatherModel,
+                        ),
+                        _currentWeatherDetailsUI(
                           context,
                           state.weatherModel,
                         ),
