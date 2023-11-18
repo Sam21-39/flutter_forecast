@@ -64,6 +64,36 @@ class _HomeState extends State<Home> {
     ];
   }
 
+  // weather images
+
+  _wetherImages(bool isDay, int code) {
+    switch (code) {
+      case 0 || 1:
+        return isDay ? SUNLIGHT : MOONLIGHT;
+      case 2:
+        return isDay ? CLOUDY_MORNING : CLOUDY_NIGHT;
+      case 3:
+        return OVERCAST;
+      case 45 || 48:
+        return COLD;
+      case 51 || 53 || 55:
+        return DRIZZLE;
+      case 56 || 57:
+        return EXTREME_WEATHER;
+      case 61 || 63 || 65 || 80 || 81 || 82:
+        return RAINFALL;
+      case 66 || 67 || 71 || 73 || 75 || 77 || 85 || 86:
+        return SNOWFALL;
+      case 95 || 96 || 99:
+        return THUNDERSTORM;
+
+      default:
+        return DAYNIGHT;
+    }
+  }
+
+  // ----------------------------------------------------------------
+  // time variants
   _timeFrameColors() {
     final time = DateTime.now().toLocal();
     if (time.hour >= 4 && time.hour < 6) {
@@ -127,6 +157,8 @@ class _HomeState extends State<Home> {
     }
     return '';
   }
+
+  //---------------------------------------------
 
   _wweatherDetailsUI(BuildContext context, WeatherModel weatherModel) {
     return Row(
@@ -258,7 +290,8 @@ class _HomeState extends State<Home> {
               SizedBox.square(
                 dimension: 200.sp,
                 child: SvgPicture.asset(
-                  SUNLIGHT,
+                  _wetherImages(weatherModel.current!.isDay == 1,
+                      weatherModel.current!.weatherCode!),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -424,6 +457,7 @@ class _HomeState extends State<Home> {
                   springAnimationDurationInMilliseconds: 800,
                   onRefresh: () async {
                     BlocProvider.of<HomeCubit>(context).refresh();
+                    _getUserAddress();
                   },
                   child: ListView(shrinkWrap: true, children: [
                     Column(
