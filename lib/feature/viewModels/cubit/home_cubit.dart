@@ -47,6 +47,13 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   refresh() async {
+    emit(
+      HomeState(
+        weatherModel: WeatherModel(),
+        errorMessage: '',
+        isLoading: true,
+      ),
+    );
     try {
       final res = await Apis.getWeather();
       if (res.error ?? false) {
@@ -72,6 +79,28 @@ class HomeCubit extends Cubit<HomeState> {
           weatherModel: WeatherModel(error: true, reason: e.toString()),
           errorMessage: e.toString(),
           isLoading: false,
+        ),
+      );
+    }
+  }
+
+  void changeGraphOrInfoState(int state, WeatherModel wm) {
+    if (state == 0) {
+      emit(
+        HomeState(
+          weatherModel: wm,
+          errorMessage: '',
+          isLoading: false,
+          isGraphOrInfo: false,
+        ),
+      );
+    } else {
+      emit(
+        HomeState(
+          weatherModel: wm,
+          errorMessage: '',
+          isLoading: false,
+          isGraphOrInfo: true,
         ),
       );
     }

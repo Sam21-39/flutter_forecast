@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:animated_toggle_switch/animated_toggle_switch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -419,7 +420,9 @@ class _HomeState extends State<Home> {
   _blocLogic(BuildContext context) {
     return BlocConsumer<HomeCubit, HomeState>(
       listener: (context, state) {
-        if (!state.isLoading && state.weatherModel.error == null) {
+        if (!state.isLoading &&
+            state.weatherModel.error == null &&
+            state.isGraphOrInfo == null) {
           EasyLoading.showSuccess('Weather fetched successfully');
         }
         if (!state.isLoading && state.weatherModel.error != null) {
@@ -459,21 +462,103 @@ class _HomeState extends State<Home> {
                     BlocProvider.of<HomeCubit>(context).refresh();
                     _getUserAddress();
                   },
-                  child: ListView(shrinkWrap: true, children: [
-                    Column(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        _currentWeatherUI(
-                          context,
-                          state.weatherModel,
-                        ),
-                        _currentWeatherDetailsUI(
-                          context,
-                          state.weatherModel,
-                        ),
-                      ],
-                    ),
-                  ]),
+                  child: ListView(
+                    shrinkWrap: true,
+                    children: [
+                      Column(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          _currentWeatherUI(
+                            context,
+                            state.weatherModel,
+                          ),
+                          _currentWeatherDetailsUI(
+                            context,
+                            state.weatherModel,
+                          ),
+                          SizedBox(
+                            height: 16.h,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.all(16.sp),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Expanded(
+                                  flex: 6,
+                                  child: Text(
+                                    '7-day Weather Forecast',
+                                    style: TextStyle(
+                                      fontSize: 32.sp,
+                                      color: _colors()[1],
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 3,
+                                  child: AnimatedToggleSwitch.dual(
+                                    animationDuration:
+                                        const Duration(milliseconds: 1200),
+                                    iconBuilder: (value) {
+                                      if (value == 0) {
+                                        return Icon(
+                                          Icons.show_chart_rounded,
+                                          size: 24.sp,
+                                          color: Colors.white,
+                                        );
+                                      }
+                                      return Icon(
+                                        Icons.info_outline_rounded,
+                                        size: 24.sp,
+                                        color: Colors.white,
+                                      );
+                                    },
+                                    current: state.isGraphOrInfo != null &&
+                                            state.isGraphOrInfo!
+                                        ? 1
+                                        : 0,
+                                    first: 0,
+                                    second: 1,
+                                    active: true,
+                                    animationCurve: Curves.easeInOutCubic,
+                                    style: ToggleStyle(
+                                      indicatorColor: _timeFrameColors(),
+                                      borderColor: UIColors.overall,
+                                      backgroundGradient: const LinearGradient(
+                                        colors: [
+                                          Colors.white,
+                                          UIColors.overall,
+                                          Colors.white,
+                                        ],
+                                      ),
+                                    ),
+                                    onChanged: (val) {
+                                      Log.showLog(val.toString());
+                                      BlocProvider.of<HomeCubit>(context)
+                                          .changeGraphOrInfoState(
+                                        val,
+                                        state.weatherModel,
+                                      );
+                                    },
+                                    onTap: (props) {
+                                      Log.showLog(
+                                          props.tapped!.index.toString());
+                                      BlocProvider.of<HomeCubit>(context)
+                                          .changeGraphOrInfoState(
+                                        props.tapped!.index,
+                                        state.weatherModel,
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 )
               : Container(),
         );
