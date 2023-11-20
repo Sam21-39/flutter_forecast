@@ -47,6 +47,13 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   refresh() async {
+    emit(
+      HomeState(
+        weatherModel: WeatherModel(),
+        errorMessage: '',
+        isLoading: true,
+      ),
+    );
     try {
       final res = await Apis.getWeather();
       if (res.error ?? false) {
