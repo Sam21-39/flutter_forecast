@@ -8,7 +8,7 @@ import 'package:flutter_forecast/feature/models/weather_model.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class Forecast extends StatefulWidget {
+class Forecast extends StatelessWidget {
   final WeatherModel weatherModel;
   final Color backColor;
   final double? top, left;
@@ -27,157 +27,126 @@ class Forecast extends StatefulWidget {
   });
 
   @override
-  State<Forecast> createState() => _ForecastState();
-}
-
-class _ForecastState extends State<Forecast>
-    with SingleTickerProviderStateMixin {
-  late final AnimationController _controller = AnimationController(
-    duration: const Duration(milliseconds: 4200),
-    vsync: this,
-  )..forward();
-  late final Animation<Offset> _positionAnimation = Tween<Offset>(
-    begin: const Offset(0, 1),
-    end: Offset(0, widget.left!),
-  ).animate(
-    CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeInOutCubic,
-    ),
-  );
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return SlideTransition(
-      position: _positionAnimation,
-      child: Container(
-        // height: widget.height,
-        width: widget.width,
-        margin: EdgeInsets.all(16.sp),
-        padding: EdgeInsets.all(16.sp),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Colors.white,
-              widget.backColor,
-              UIColors.overall,
-            ],
-            begin: const FractionalOffset(0.59, 0.25),
-            end: const FractionalOffset(0.85, 0.85),
+    return Container(
+      // height: height,
+      width: width,
+      margin: EdgeInsets.all(16.sp),
+      padding: EdgeInsets.all(16.sp),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            Colors.white,
+            backColor,
+            UIColors.overall,
+          ],
+          begin: const FractionalOffset(0.59, 0.25),
+          end: const FractionalOffset(0.85, 0.85),
+        ),
+        borderRadius: BorderRadius.circular(8),
+        boxShadow: [
+          BoxShadow(
+            blurRadius: 2.sp,
+            offset: Offset.fromDirection(
+              pi / 2,
+            ),
+            color: Colors.black38,
           ),
-          borderRadius: BorderRadius.circular(8),
-          boxShadow: [
-            BoxShadow(
-              blurRadius: 2.sp,
-              offset: Offset.fromDirection(
-                pi / 2,
+        ],
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          SizedBox.square(
+            dimension: 85.sp,
+            child: SvgPicture.asset(
+              _wetherImages(
+                weatherModel.current!.isDay == 1,
+                weatherModel.daily!.weatherCode![index],
               ),
-              color: Colors.black38,
+              fit: BoxFit.cover,
             ),
-          ],
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            SizedBox.square(
-              dimension: 85.sp,
-              child: SvgPicture.asset(
-                _wetherImages(
-                  widget.weatherModel.current!.isDay == 1,
-                  widget.weatherModel.daily!.weatherCode![widget.index],
+          ),
+          Text(
+            "${WeatherCodes.codes[weatherModel.daily!.weatherCode![index]]}",
+            style: TextStyle(
+              fontSize: 20.sp,
+              fontWeight: FontWeight.w700,
+              color: UIColors.overall,
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              SizedBox.square(
+                dimension: 50.sp,
+                child: SvgPicture.asset(
+                  HOT,
+                  fit: BoxFit.cover,
                 ),
-                fit: BoxFit.cover,
               ),
-            ),
-            Text(
-              "${WeatherCodes.codes[widget.weatherModel.daily!.weatherCode![widget.index]]}",
-              style: TextStyle(
-                fontSize: 20.sp,
-                fontWeight: FontWeight.w700,
-                color: UIColors.overall,
+              Text(
+                "${weatherModel.daily!.temperature2MMin![index]} ${weatherModel.dailyUnits!.temperature2MMin}",
+                style: TextStyle(
+                  fontSize: 22.sp,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white,
+                ),
               ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                SizedBox.square(
-                  dimension: 50.sp,
-                  child: SvgPicture.asset(
-                    HOT,
-                    fit: BoxFit.cover,
-                  ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "${weatherModel.daily!.temperature2MMax![index]} ${weatherModel.dailyUnits!.temperature2MMax}",
+                style: TextStyle(
+                  fontSize: 22.sp,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white,
                 ),
-                Text(
-                  "${widget.weatherModel.daily!.temperature2MMin![widget.index]} ${widget.weatherModel.dailyUnits!.temperature2MMin}",
-                  style: TextStyle(
-                    fontSize: 22.sp,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.white,
-                  ),
+              ),
+              SizedBox.square(
+                dimension: 50.sp,
+                child: SvgPicture.asset(
+                  COLD,
+                  fit: BoxFit.cover,
                 ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "${widget.weatherModel.daily!.temperature2MMax![widget.index]} ${widget.weatherModel.dailyUnits!.temperature2MMax}",
-                  style: TextStyle(
-                    fontSize: 22.sp,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.white,
-                  ),
+              ),
+            ],
+          ),
+          Column(
+            children: [
+              Text(
+                weatherModel.daily!.time![index].toIso8601String().split(
+                      'T',
+                    )[0],
+                style: TextStyle(
+                  fontSize: 20.sp,
+                  fontWeight: FontWeight.w300,
+                  color: Colors.white70,
                 ),
-                SizedBox.square(
-                  dimension: 50.sp,
-                  child: SvgPicture.asset(
-                    COLD,
-                    fit: BoxFit.cover,
-                  ),
+              ),
+              Text(
+                'Sunrise - Sunset',
+                style: TextStyle(
+                  fontSize: 15.sp,
+                  fontWeight: FontWeight.w300,
+                  color: Colors.white70,
                 ),
-              ],
-            ),
-            Column(
-              children: [
-                Text(
-                  widget.weatherModel.daily!.time![widget.index]
-                      .toIso8601String()
-                      .split(
-                        'T',
-                      )[0],
-                  style: TextStyle(
-                    fontSize: 20.sp,
-                    fontWeight: FontWeight.w300,
-                    color: Colors.white70,
-                  ),
+              ),
+              Text(
+                '${weatherModel.daily!.sunrise![index].split('T')[1]} - ${weatherModel.daily!.sunset![index].split('T')[1]}',
+                style: TextStyle(
+                  fontSize: 13.sp,
+                  fontWeight: FontWeight.w300,
+                  color: Colors.white70,
                 ),
-                Text(
-                  'Sunrise - Sunset',
-                  style: TextStyle(
-                    fontSize: 15.sp,
-                    fontWeight: FontWeight.w300,
-                    color: Colors.white70,
-                  ),
-                ),
-                Text(
-                  '${widget.weatherModel.daily!.sunrise![widget.index].split('T')[1]} - ${widget.weatherModel.daily!.sunset![widget.index].split('T')[1]}',
-                  style: TextStyle(
-                    fontSize: 13.sp,
-                    fontWeight: FontWeight.w300,
-                    color: Colors.white70,
-                  ),
-                ),
-              ],
-            )
-          ],
-        ),
+              ),
+            ],
+          )
+        ],
       ),
     );
   }
