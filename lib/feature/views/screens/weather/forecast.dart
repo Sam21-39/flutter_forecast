@@ -33,12 +33,12 @@ class Forecast extends StatefulWidget {
 class _ForecastState extends State<Forecast>
     with SingleTickerProviderStateMixin {
   late final AnimationController _controller = AnimationController(
-    duration: const Duration(milliseconds: 2020),
+    duration: const Duration(milliseconds: 4200),
     vsync: this,
   )..forward();
   late final Animation<Offset> _positionAnimation = Tween<Offset>(
-    begin: Offset.fromDirection(0.0),
-    end: Offset(widget.left!, 0),
+    begin: const Offset(0, 1),
+    end: Offset(0, widget.left!),
   ).animate(
     CurvedAnimation(
       parent: _controller,
@@ -59,12 +59,7 @@ class _ForecastState extends State<Forecast>
       child: Container(
         // height: widget.height,
         width: widget.width,
-        margin: EdgeInsets.only(
-          left: 16.sp,
-          top: 16.sp,
-          bottom: 16.sp,
-          right: widget.index == 6 ? 16.sp : 0,
-        ),
+        margin: EdgeInsets.all(16.sp),
         padding: EdgeInsets.all(16.sp),
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -73,8 +68,8 @@ class _ForecastState extends State<Forecast>
               widget.backColor,
               UIColors.overall,
             ],
-            begin: const FractionalOffset(0.4, 0.12),
-            end: const FractionalOffset(0.7, 0.75),
+            begin: const FractionalOffset(0.59, 0.25),
+            end: const FractionalOffset(0.85, 0.85),
           ),
           borderRadius: BorderRadius.circular(8),
           boxShadow: [
@@ -92,7 +87,7 @@ class _ForecastState extends State<Forecast>
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             SizedBox.square(
-              dimension: 80.sp,
+              dimension: 85.sp,
               child: SvgPicture.asset(
                 _wetherImages(
                   widget.weatherModel.current!.isDay == 1,
@@ -104,7 +99,7 @@ class _ForecastState extends State<Forecast>
             Text(
               "${WeatherCodes.codes[widget.weatherModel.daily!.weatherCode![widget.index]]}",
               style: TextStyle(
-                fontSize: 22.sp,
+                fontSize: 20.sp,
                 fontWeight: FontWeight.w700,
                 color: UIColors.overall,
               ),
@@ -120,9 +115,9 @@ class _ForecastState extends State<Forecast>
                   ),
                 ),
                 Text(
-                  "${widget.weatherModel.daily!.temperature2MMax![widget.index]} ${widget.weatherModel.dailyUnits!.temperature2MMax}",
+                  "${widget.weatherModel.daily!.temperature2MMin![widget.index]} ${widget.weatherModel.dailyUnits!.temperature2MMin}",
                   style: TextStyle(
-                    fontSize: 24.sp,
+                    fontSize: 22.sp,
                     fontWeight: FontWeight.w700,
                     color: Colors.white,
                   ),
@@ -133,9 +128,9 @@ class _ForecastState extends State<Forecast>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "${widget.weatherModel.daily!.temperature2MMin![widget.index]} ${widget.weatherModel.dailyUnits!.temperature2MMin}",
+                  "${widget.weatherModel.daily!.temperature2MMax![widget.index]} ${widget.weatherModel.dailyUnits!.temperature2MMax}",
                   style: TextStyle(
-                    fontSize: 24.sp,
+                    fontSize: 22.sp,
                     fontWeight: FontWeight.w700,
                     color: Colors.white,
                   ),
@@ -149,20 +144,20 @@ class _ForecastState extends State<Forecast>
                 ),
               ],
             ),
-            Text(
-              widget.weatherModel.daily!.time![widget.index]
-                  .toIso8601String()
-                  .split(
-                    'T',
-                  )[0],
-              style: TextStyle(
-                fontSize: 20.sp,
-                fontWeight: FontWeight.w300,
-                color: Colors.white70,
-              ),
-            ),
             Column(
               children: [
+                Text(
+                  widget.weatherModel.daily!.time![widget.index]
+                      .toIso8601String()
+                      .split(
+                        'T',
+                      )[0],
+                  style: TextStyle(
+                    fontSize: 20.sp,
+                    fontWeight: FontWeight.w300,
+                    color: Colors.white70,
+                  ),
+                ),
                 Text(
                   'Sunrise - Sunset',
                   style: TextStyle(
@@ -174,7 +169,7 @@ class _ForecastState extends State<Forecast>
                 Text(
                   '${widget.weatherModel.daily!.sunrise![widget.index].split('T')[1]} - ${widget.weatherModel.daily!.sunset![widget.index].split('T')[1]}',
                   style: TextStyle(
-                    fontSize: 18.sp,
+                    fontSize: 13.sp,
                     fontWeight: FontWeight.w300,
                     color: Colors.white70,
                   ),

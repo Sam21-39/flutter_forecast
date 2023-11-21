@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -27,7 +28,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   final location = TextEditingController(text: 'FlutterForecast');
   final cardHeight = 360.h;
-  final cardWidth = 180.w;
+  final cardWidth = double.maxFinite;
 
   @override
   void initState() {
@@ -487,12 +488,18 @@ class _HomeState extends State<Home> {
                               ),
                             ),
                           ),
-                          SizedBox(
-                            height: 400.h,
-                            width: MediaQuery.of(context).size.width,
-                            child: ListView(
-                              scrollDirection: Axis.horizontal,
-                              children: [
+                          // for (var i = 1; i < 7; i++)
+                          //   Forecast(
+                          //     backColor: _timeFrameColors(),
+                          //     weatherModel: state.weatherModel,
+                          //     index: i,
+                          //     left: i / cardWidth,
+                          //     width: cardWidth,
+                          //     height: cardHeight,
+                          //   ),
+
+                          CarouselSlider(
+                              items: [
                                 for (var i = 1; i < 7; i++)
                                   Forecast(
                                     backColor: _timeFrameColors(),
@@ -500,11 +507,27 @@ class _HomeState extends State<Home> {
                                     index: i,
                                     left: i / cardWidth,
                                     width: cardWidth,
-                                    height: cardHeight,
+                                    height: cardHeight * 0.2,
                                   ),
                               ],
-                            ),
-                          ),
+                              options: CarouselOptions(
+                                height: cardHeight,
+                                // aspectRatio: 16 / 9,
+                                viewportFraction: 0.77,
+                                initialPage: 0,
+                                enableInfiniteScroll: true,
+                                reverse: false,
+                                autoPlay: true,
+                                autoPlayInterval:
+                                    const Duration(milliseconds: 3800),
+                                autoPlayAnimationDuration:
+                                    const Duration(milliseconds: 800),
+                                autoPlayCurve: Curves.fastOutSlowIn,
+                                enlargeCenterPage: true,
+                                enlargeFactor: 0.2,
+                                onPageChanged: (index, reason) {},
+                                scrollDirection: Axis.horizontal,
+                              ))
                         ],
                       ),
                     ],
