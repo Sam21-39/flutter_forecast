@@ -54,6 +54,7 @@ dependencies:
   flutter_svg: ^2.0.9
   flutter_svg_provider: ^1.0.6
   liquid_pull_to_refresh: ^3.0.1
+  stacked_list_carousel: ^1.0.1
 
 dev_dependencies:
   flutter_test:

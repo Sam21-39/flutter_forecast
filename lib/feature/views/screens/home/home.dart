@@ -10,6 +10,7 @@ import 'package:flutter_forecast/core/utils/ui_colors.dart';
 import 'package:flutter_forecast/core/widgets/base_scaffold.dart';
 import 'package:flutter_forecast/feature/models/weather_model.dart';
 import 'package:flutter_forecast/feature/viewModels/cubit/home_cubit.dart';
+import 'package:flutter_forecast/feature/views/screens/weather/forecast.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geocoding/geocoding.dart';
@@ -25,6 +26,8 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final location = TextEditingController(text: 'FlutterForecast');
+  final cardHeight = 360.h;
+  final cardWidth = 180.w;
 
   @override
   void initState() {
@@ -418,9 +421,7 @@ class _HomeState extends State<Home> {
   _blocLogic(BuildContext context) {
     return BlocConsumer<HomeCubit, HomeState>(
       listener: (context, state) {
-        if (!state.isLoading &&
-            state.weatherModel.error == null &&
-            state.isGraphOrInfo == null) {
+        if (!state.isLoading && state.weatherModel.error == null) {
           EasyLoading.showSuccess('Weather fetched successfully');
         }
         if (!state.isLoading && state.weatherModel.error != null) {
@@ -456,6 +457,7 @@ class _HomeState extends State<Home> {
                   color: UIColors.overall,
                   animSpeedFactor: 1.8,
                   springAnimationDurationInMilliseconds: 800,
+                  showChildOpacityTransition: false,
                   onRefresh: () async {
                     BlocProvider.of<HomeCubit>(context).refresh();
                     _getUserAddress();
@@ -474,8 +476,26 @@ class _HomeState extends State<Home> {
                             context,
                             state.weatherModel,
                           ),
-                          SizedBox(
-                            height: 16.h,
+                          SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: SizedBox(
+                              height: 400.h,
+                              // width: MediaQuery.of(context).size.width,
+                              child: Row(
+                                // alignment: Alignment.topLeft,
+                                children: [
+                                  for (var i = 0; i < 7; i++)
+                                    Forecast(
+                                      backColor: _timeFrameColors(),
+                                      weatherModel: state.weatherModel,
+                                      index: i,
+                                      left: i / cardWidth,
+                                      width: cardWidth,
+                                      height: cardHeight,
+                                    ),
+                                ],
+                              ),
+                            ),
                           ),
                         ],
                       ),

@@ -55,6 +55,7 @@ class BaseScaffold extends StatelessWidget {
             } else if (state.isConnected && !state.isLoading) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
+                  duration: const Duration(milliseconds: 800),
                   content: Text(
                     state.errorMessage,
                   ),
@@ -63,6 +64,7 @@ class BaseScaffold extends StatelessWidget {
             } else {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
+                  duration: const Duration(milliseconds: 800),
                   content: Text(
                     state.errorMessage,
                   ),

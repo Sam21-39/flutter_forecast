@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_forecast/core/utils/constants.dart';
 import 'package:flutter_forecast/core/utils/log.dart';
 import 'package:flutter_forecast/feature/models/weather_model.dart';
@@ -9,13 +10,11 @@ import 'package:geolocator/geolocator.dart';
 class Apis {
   static Future<WeatherModel> getWeather() async {
     try {
-      final http = htp.Client();
-      final pos = await determinePosition();
+      final pos = await Apis.determinePosition();
       final url = Uri.parse(
         "$BASE_URL?latitude=${pos.latitude}&longitude=${pos.longitude}$URL_FIXED_PARAMS",
       );
-
-      final res = await http.get(url);
+      final res = await compute(apiIsolate, url);
       Log.showLog(res.body);
       return WeatherModel.fromJson(
         json.decode(res.body),
@@ -56,4 +55,10 @@ class Apis {
       desiredAccuracy: LocationAccuracy.best,
     );
   }
+}
+
+apiIsolate(Uri url) async {
+  final http = htp.Client();
+
+  return await http.get(url);
 }

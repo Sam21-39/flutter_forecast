@@ -83,26 +83,4 @@ class HomeCubit extends Cubit<HomeState> {
       );
     }
   }
-
-  void changeGraphOrInfoState(int state, WeatherModel wm) {
-    if (state == 0) {
-      emit(
-        HomeState(
-          weatherModel: wm,
-          errorMessage: '',
-          isLoading: false,
-          isGraphOrInfo: false,
-        ),
-      );
-    } else {
-      emit(
-        HomeState(
-          weatherModel: wm,
-          errorMessage: '',
-          isLoading: false,
-          isGraphOrInfo: true,
-        ),
-      );
-    }
-  }
 }
