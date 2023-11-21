@@ -1,5 +1,4 @@
 import 'dart:math';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -13,6 +12,7 @@ import 'package:flutter_forecast/feature/models/weather_model.dart';
 import 'package:flutter_forecast/feature/viewModels/cubit/home_cubit.dart';
 import 'package:flutter_forecast/feature/views/screens/weather/forecast.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -27,8 +27,8 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final location = TextEditingController(text: 'FlutterForecast');
-  final cardHeight = 360.h;
-  final cardWidth = double.maxFinite;
+  final cardHeight = 360.sp;
+  final cardWidth = 200.sp;
 
   @override
   void initState() {
@@ -480,7 +480,7 @@ class _HomeState extends State<Home> {
                           SizedBox(
                             height: 36.sp,
                             child: Text(
-                              'Upcoming weather',
+                              'Upcoming weather forecast',
                               style: TextStyle(
                                 fontSize: 26.sp,
                                 fontWeight: FontWeight.w300,
@@ -489,45 +489,106 @@ class _HomeState extends State<Home> {
                             ),
                           ),
                           // for (var i = 1; i < 7; i++)
-                          //   Forecast(
-                          //     backColor: _timeFrameColors(),
-                          //     weatherModel: state.weatherModel,
-                          //     index: i,
-                          //     left: i / cardWidth,
-                          //     width: cardWidth,
-                          //     height: cardHeight,
+                          //   Align(
+                          //     alignment: i % 2 != 0
+                          //         ? Alignment.topLeft
+                          //         : Alignment.bottomRight,
+                          // child: Forecast(
+                          //   backColor: _timeFrameColors(),
+                          //   weatherModel: state.weatherModel,
+                          //   index: i,
+                          //   width: cardWidth,
+                          //   height: cardHeight,
+                          // ),
                           //   ),
 
-                          CarouselSlider.builder(
-                            itemCount: 7,
-                            itemBuilder: (context, index, realIndex) =>
+                          //CAROUSEL implementation
+
+                          // SizedBox(
+                          //   height: cardHeight,
+                          //   child: CarouselSlider.builder(
+                          //     itemCount: 7,
+                          //     itemBuilder: (context, index, realIndex) {
+                          //       print('CarouselSlider start');
+
+                          //       try {
+                          //         return Forecast(
+                          //           backColor: _timeFrameColors(),
+                          //           weatherModel: state.weatherModel,
+                          //           index: index,
+                          //           width: cardWidth,
+                          //           height: cardHeight,
+                          //         );
+                          //       } catch (e) {
+                          //         print(
+                          //           e.toString(),
+                          //         );
+                          //       }
+                          //       return Text(
+                          //         index.toString(),
+                          //       );
+                          //       // return Forecast(
+                          //       //   backColor: _timeFrameColors(),
+                          //       //   weatherModel: state.weatherModel,
+                          //       //   index: index,
+                          //       //   width: cardWidth,
+                          //       //   height: cardHeight,
+                          //       // );
+                          //     },
+                          //     options: CarouselOptions(
+                          //       height: cardHeight,
+                          //       // aspectRatio: 16 / 10,
+                          //       viewportFraction: 0.77,
+                          //       initialPage: 0,
+                          //       enableInfiniteScroll: true,
+                          //       reverse: false,
+                          //       autoPlay: true,
+                          //       autoPlayInterval:
+                          //           const Duration(milliseconds: 3800),
+                          //       autoPlayAnimationDuration:
+                          //           const Duration(milliseconds: 800),
+                          //       autoPlayCurve: Curves.fastOutSlowIn,
+                          //       enlargeCenterPage: true,
+                          //       enlargeFactor: 0.2,
+                          //       onPageChanged: (index, reason) {},
+                          //       scrollDirection: Axis.horizontal,
+                          //     ),
+                          //   ),
+                          // )
+
+                          // LISTVEIW IMPLEMENTATION
+
+                          // ListView.builder(
+                          //   itemCount: 7,
+                          //   shrinkWrap: true,
+                          //   scrollDirection: Axis.horizontal,
+                          //   // physics: const NeverScrollableScrollPhysics(),
+                          //   itemBuilder: (context, index) {
+                          //     return Forecast(
+                          //       backColor: _timeFrameColors(),
+                          //       weatherModel: state.weatherModel,
+                          //       index: index,
+                          //       width: cardWidth,
+                          //       height: cardHeight,
+                          //     );
+                          //   },
+                          // ),
+
+                          StaggeredGrid.count(
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 4.sp,
+                            crossAxisSpacing: 2.sp,
+                            children: [
+                              for (var i = 1; i < 7; i++)
                                 Forecast(
-                              backColor: _timeFrameColors(),
-                              weatherModel: state.weatherModel,
-                              index: index,
-                              left: index / cardWidth,
-                              width: cardWidth,
-                              height: cardHeight,
-                            ),
-                            options: CarouselOptions(
-                              height: cardHeight,
-                              // aspectRatio: 16 / 9,
-                              viewportFraction: 0.77,
-                              initialPage: 0,
-                              enableInfiniteScroll: true,
-                              reverse: false,
-                              autoPlay: true,
-                              autoPlayInterval:
-                                  const Duration(milliseconds: 3800),
-                              autoPlayAnimationDuration:
-                                  const Duration(milliseconds: 800),
-                              autoPlayCurve: Curves.fastOutSlowIn,
-                              enlargeCenterPage: true,
-                              enlargeFactor: 0.2,
-                              onPageChanged: (index, reason) {},
-                              scrollDirection: Axis.horizontal,
-                            ),
-                          )
+                                  backColor: _timeFrameColors(),
+                                  weatherModel: state.weatherModel,
+                                  index: i,
+                                  width: cardWidth,
+                                  height: cardHeight,
+                                ),
+                            ],
+                          ),
                         ],
                       ),
                     ],
