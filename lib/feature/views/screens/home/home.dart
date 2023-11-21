@@ -480,7 +480,7 @@ class _HomeState extends State<Home> {
                           SizedBox(
                             height: 36.sp,
                             child: Text(
-                              'Upcoming weather',
+                              'Weather Details',
                               style: TextStyle(
                                 fontSize: 26.sp,
                                 fontWeight: FontWeight.w300,
@@ -488,33 +488,27 @@ class _HomeState extends State<Home> {
                               ),
                             ),
                           ),
-                          // for (var i = 1; i < 7; i++)
-                          //   Forecast(
-                          //     backColor: _timeFrameColors(),
-                          //     weatherModel: state.weatherModel,
-                          //     index: i,
-                          //     left: i / cardWidth,
-                          //     width: cardWidth,
-                          //     height: cardHeight,
-                          //   ),
-
                           CarouselSlider(
-                              items: [
-                                for (var i = 1; i < 7; i++)
-                                  Forecast(
+                              items: state.weatherModel.daily!.time!.map(
+                                (e) {
+                                  final i = state.weatherModel.daily!.time!
+                                      .indexOf(e);
+                                  return Forecast(
                                     backColor: _timeFrameColors(),
                                     weatherModel: state.weatherModel,
                                     index: i,
                                     left: i / cardWidth,
                                     width: cardWidth,
                                     height: cardHeight * 0.2,
-                                  ),
-                              ],
+                                  );
+                                },
+                              ).toList(),
                               options: CarouselOptions(
                                 height: cardHeight,
                                 // aspectRatio: 16 / 9,
                                 viewportFraction: 0.77,
                                 initialPage: 0,
+                                animateToClosest: true,
                                 enableInfiniteScroll: true,
                                 reverse: false,
                                 autoPlay: true,
