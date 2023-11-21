@@ -63,7 +63,7 @@ class _ForecastState extends State<Forecast>
           left: 16.sp,
           top: 16.sp,
           bottom: 16.sp,
-          right: widget.index == 7 ? 16.sp : 0,
+          right: widget.index == 6 ? 16.sp : 0,
         ),
         padding: EdgeInsets.all(16.sp),
         decoration: BoxDecoration(

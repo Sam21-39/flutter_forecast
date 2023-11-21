@@ -493,7 +493,7 @@ class _HomeState extends State<Home> {
                             child: ListView(
                               scrollDirection: Axis.horizontal,
                               children: [
-                                for (var i = 1; i < 8; i++)
+                                for (var i = 1; i < 7; i++)
                                   Forecast(
                                     backColor: _timeFrameColors(),
                                     weatherModel: state.weatherModel,
