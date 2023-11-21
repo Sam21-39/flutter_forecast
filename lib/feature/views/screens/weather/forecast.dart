@@ -63,7 +63,7 @@ class _ForecastState extends State<Forecast>
           left: 16.sp,
           top: 16.sp,
           bottom: 16.sp,
-          right: widget.index == 6 ? 16.sp : 0,
+          right: widget.index == 7 ? 16.sp : 0,
         ),
         padding: EdgeInsets.all(16.sp),
         decoration: BoxDecoration(
@@ -89,6 +89,7 @@ class _ForecastState extends State<Forecast>
         ),
         child: Column(
           mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             SizedBox.square(
               dimension: 80.sp,
@@ -160,31 +161,24 @@ class _ForecastState extends State<Forecast>
                 color: Colors.white70,
               ),
             ),
-            Row(
+            Column(
               children: [
                 Text(
-              widget.weatherModel.daily!.time![widget.index]
-                  .toIso8601String()
-                  .split(
-                    'T',
-                  )[0],
-              style: TextStyle(
-                fontSize: 20.sp,
-                fontWeight: FontWeight.w300,
-                color: Colors.white70,
-              ),
-            ),Text(
-              widget.weatherModel.daily!.time![widget.index]
-                  .toIso8601String()
-                  .split(
-                    'T',
-                  )[0],
-              style: TextStyle(
-                fontSize: 20.sp,
-                fontWeight: FontWeight.w300,
-                color: Colors.white70,
-              ),
-            ),
+                  'Sunrise - Sunset',
+                  style: TextStyle(
+                    fontSize: 15.sp,
+                    fontWeight: FontWeight.w300,
+                    color: Colors.white70,
+                  ),
+                ),
+                Text(
+                  '${widget.weatherModel.daily!.sunrise![widget.index].split('T')[1]} - ${widget.weatherModel.daily!.sunset![widget.index].split('T')[1]}',
+                  style: TextStyle(
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.w300,
+                    color: Colors.white70,
+                  ),
+                ),
               ],
             )
           ],

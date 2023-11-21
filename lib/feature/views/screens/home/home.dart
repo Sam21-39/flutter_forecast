@@ -476,25 +476,33 @@ class _HomeState extends State<Home> {
                             context,
                             state.weatherModel,
                           ),
-                          SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: SizedBox(
-                              height: 400.h,
-                              // width: MediaQuery.of(context).size.width,
-                              child: Row(
-                                // alignment: Alignment.topLeft,
-                                children: [
-                                  for (var i = 0; i < 7; i++)
-                                    Forecast(
-                                      backColor: _timeFrameColors(),
-                                      weatherModel: state.weatherModel,
-                                      index: i,
-                                      left: i / cardWidth,
-                                      width: cardWidth,
-                                      height: cardHeight,
-                                    ),
-                                ],
+                          SizedBox(
+                            height: 36.sp,
+                            child: Text(
+                              'Upcoming weather',
+                              style: TextStyle(
+                                fontSize: 26.sp,
+                                fontWeight: FontWeight.w300,
+                                color: _colors()[1],
                               ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 400.h,
+                            width: MediaQuery.of(context).size.width,
+                            child: ListView(
+                              scrollDirection: Axis.horizontal,
+                              children: [
+                                for (var i = 1; i < 8; i++)
+                                  Forecast(
+                                    backColor: _timeFrameColors(),
+                                    weatherModel: state.weatherModel,
+                                    index: i,
+                                    left: i / cardWidth,
+                                    width: cardWidth,
+                                    height: cardHeight,
+                                  ),
+                              ],
                             ),
                           ),
                         ],
