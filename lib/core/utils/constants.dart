@@ -5,6 +5,10 @@ const BASE_URL = "https://api.open-meteo.com/v1/forecast";
 const URL_FIXED_PARAMS =
     "&current=temperature_2m,,relative_humidity_2m,is_day,precipitation,rain,weather_code,wind_speed_10m,wind_direction_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset,uv_index_max&timezone=auto";
 
+const AQI_BASE_URL = "https://air-quality-api.open-meteo.com/v1/air-quality";
+
+const AQI_URL_FIXED_PARAMS =
+    "&current=pm10,pm2_5,carbon_monoxide,nitrogen_dioxide,sulphur_dioxide,ozone,dust,uv_index&timezone=auto";
 //----------------------------------------------------------------
 
 // Icons

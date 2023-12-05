@@ -8,11 +8,13 @@ class BaseScaffold extends StatelessWidget {
   final TextEditingController title;
   final List<Color> colors;
   final Widget body;
+  final List<Widget>? appbarWidgets;
   const BaseScaffold({
     super.key,
     required this.title,
     required this.colors,
     required this.body,
+    this.appbarWidgets,
   });
 
   @override
@@ -20,6 +22,7 @@ class BaseScaffold extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: colors[0],
+        actions: appbarWidgets,
         title: TextField(
           controller: title,
           readOnly: true,

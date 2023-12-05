@@ -1,4 +1,6 @@
 import 'dart:math';
+import 'package:animated_toggle_switch/animated_toggle_switch.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -10,6 +12,7 @@ import 'package:flutter_forecast/core/utils/ui_colors.dart';
 import 'package:flutter_forecast/core/widgets/base_scaffold.dart';
 import 'package:flutter_forecast/feature/models/weather_model.dart';
 import 'package:flutter_forecast/feature/viewModels/cubit/home_cubit.dart';
+import 'package:flutter_forecast/feature/views/screens/weather/aqi.dart';
 import 'package:flutter_forecast/feature/views/screens/weather/forecast.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -422,10 +425,14 @@ class _HomeState extends State<Home> {
   _blocLogic(BuildContext context) {
     return BlocConsumer<HomeCubit, HomeState>(
       listener: (context, state) {
-        if (!state.isLoading && state.weatherModel.error == null) {
+        if (!state.isLoading &&
+            state.weatherModel.error == null &&
+            state.aqiModel == null) {
           EasyLoading.showSuccess('Weather fetched successfully');
         }
-        if (!state.isLoading && state.weatherModel.error != null) {
+        if (!state.isLoading &&
+            state.weatherModel.error != null &&
+            state.aqiModel == null) {
           EasyLoading.showError('Weather fecthing failed');
         }
       },
@@ -460,7 +467,8 @@ class _HomeState extends State<Home> {
                   springAnimationDurationInMilliseconds: 800,
                   showChildOpacityTransition: false,
                   onRefresh: () async {
-                    BlocProvider.of<HomeCubit>(context).refresh();
+                    BlocProvider.of<HomeCubit>(context)
+                        .refresh(state.isForecast);
                     _getUserAddress();
                   },
                   child: ListView(
@@ -477,118 +485,115 @@ class _HomeState extends State<Home> {
                             context,
                             state.weatherModel,
                           ),
-                          SizedBox(
-                            height: 36.sp,
-                            child: Text(
-                              'Upcoming weather forecast',
-                              style: TextStyle(
-                                fontSize: 26.sp,
-                                fontWeight: FontWeight.w300,
-                                color: _colors()[1],
-                              ),
-                            ),
-                          ),
-                          // for (var i = 1; i < 7; i++)
-                          //   Align(
-                          //     alignment: i % 2 != 0
-                          //         ? Alignment.topLeft
-                          //         : Alignment.bottomRight,
-                          // child: Forecast(
-                          //   backColor: _timeFrameColors(),
-                          //   weatherModel: state.weatherModel,
-                          //   index: i,
-                          //   width: cardWidth,
-                          //   height: cardHeight,
-                          // ),
-                          //   ),
-
-                          //CAROUSEL implementation
-
-                          // SizedBox(
-                          //   height: cardHeight,
-                          //   child: CarouselSlider.builder(
-                          //     itemCount: 7,
-                          //     itemBuilder: (context, index, realIndex) {
-                          //       print('CarouselSlider start');
-
-                          //       try {
-                          //         return Forecast(
-                          //           backColor: _timeFrameColors(),
-                          //           weatherModel: state.weatherModel,
-                          //           index: index,
-                          //           width: cardWidth,
-                          //           height: cardHeight,
-                          //         );
-                          //       } catch (e) {
-                          //         print(
-                          //           e.toString(),
-                          //         );
-                          //       }
-                          //       return Text(
-                          //         index.toString(),
-                          //       );
-                          //       // return Forecast(
-                          //       //   backColor: _timeFrameColors(),
-                          //       //   weatherModel: state.weatherModel,
-                          //       //   index: index,
-                          //       //   width: cardWidth,
-                          //       //   height: cardHeight,
-                          //       // );
-                          //     },
-                          //     options: CarouselOptions(
-                          //       height: cardHeight,
-                          //       // aspectRatio: 16 / 10,
-                          //       viewportFraction: 0.77,
-                          //       initialPage: 0,
-                          //       enableInfiniteScroll: true,
-                          //       reverse: false,
-                          //       autoPlay: true,
-                          //       autoPlayInterval:
-                          //           const Duration(milliseconds: 3800),
-                          //       autoPlayAnimationDuration:
-                          //           const Duration(milliseconds: 800),
-                          //       autoPlayCurve: Curves.fastOutSlowIn,
-                          //       enlargeCenterPage: true,
-                          //       enlargeFactor: 0.2,
-                          //       onPageChanged: (index, reason) {},
-                          //       scrollDirection: Axis.horizontal,
-                          //     ),
-                          //   ),
-                          // )
-
-                          // LISTVEIW IMPLEMENTATION
-
-                          // ListView.builder(
-                          //   itemCount: 7,
-                          //   shrinkWrap: true,
-                          //   scrollDirection: Axis.horizontal,
-                          //   // physics: const NeverScrollableScrollPhysics(),
-                          //   itemBuilder: (context, index) {
-                          //     return Forecast(
-                          //       backColor: _timeFrameColors(),
-                          //       weatherModel: state.weatherModel,
-                          //       index: index,
-                          //       width: cardWidth,
-                          //       height: cardHeight,
-                          //     );
-                          //   },
-                          // ),
-
-                          StaggeredGrid.count(
-                            crossAxisCount: 2,
-                            mainAxisSpacing: 4.sp,
-                            crossAxisSpacing: 2.sp,
-                            children: [
-                              for (var i = 1; i < 7; i++)
-                                Forecast(
-                                  backColor: _timeFrameColors(),
-                                  weatherModel: state.weatherModel,
-                                  index: i,
-                                  width: cardWidth,
-                                  height: cardHeight,
+                          AnimatedToggleSwitch<bool>.dual(
+                            current: !state.isForecast,
+                            first: false,
+                            second: true,
+                            spacing: 45.sp,
+                            style: ToggleStyle(
+                              borderColor: Colors.transparent,
+                              backgroundColor: _colors()[1],
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(8.0)),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: state.isForecast
+                                      ? UIColors.overall
+                                      : UIColors.sunlight,
+                                  spreadRadius: 1,
+                                  blurRadius: 1,
+                                  offset: const Offset(0, 0.5),
                                 ),
-                            ],
+                              ],
+                            ),
+                            borderWidth: 8.sp,
+                            height: 50.h,
+                            loadingIconBuilder: (context, global) =>
+                                const CupertinoActivityIndicator(
+                                    color: Colors.white),
+                            onChanged: (b) {
+                              BlocProvider.of<HomeCubit>(context).toggleAQI(
+                                !b,
+                                state.weatherModel,
+                              );
+                              return Future<dynamic>.delayed(
+                                  const Duration(seconds: 2));
+                            },
+                            styleBuilder: (b) => ToggleStyle(
+                                indicatorColor:
+                                    b ? UIColors.sunlight : UIColors.overall),
+                            iconBuilder: (value) => value
+                                ? const Icon(Icons.air_rounded)
+                                : const Icon(Icons.cloud),
+                            textBuilder: (value) => value
+                                ? Center(
+                                    child: Text(
+                                      'AQI',
+                                      style: TextStyle(
+                                          fontSize: 14.sp, color: Colors.white),
+                                    ),
+                                  )
+                                : Center(
+                                    child: Text(
+                                      'Forecast',
+                                      style: TextStyle(
+                                          fontSize: 14.sp, color: Colors.white),
+                                    ),
+                                  ),
                           ),
+                          state.isForecast
+                              ? Column(
+                                  children: [
+                                    SizedBox(
+                                      height: 36.sp,
+                                      child: Text(
+                                        'Upcoming weather forecast',
+                                        style: TextStyle(
+                                          fontSize: 26.sp,
+                                          fontWeight: FontWeight.w300,
+                                          color: _colors()[1],
+                                        ),
+                                      ),
+                                    ),
+                                    StaggeredGrid.count(
+                                      crossAxisCount: 2,
+                                      mainAxisSpacing: 4.sp,
+                                      crossAxisSpacing: 2.sp,
+                                      children: [
+                                        for (var i = 1; i < 7; i++)
+                                          Forecast(
+                                            backColor: _timeFrameColors(),
+                                            weatherModel: state.weatherModel,
+                                            index: i,
+                                            width: cardWidth,
+                                            height: cardHeight,
+                                          ),
+                                      ],
+                                    ),
+                                  ],
+                                )
+                              : Column(
+                                  children: [
+                                    SizedBox(
+                                      height: 36.sp,
+                                      child: Text(
+                                        'Current Air Quality',
+                                        style: TextStyle(
+                                          fontSize: 26.sp,
+                                          fontWeight: FontWeight.w300,
+                                          color: _colors()[1],
+                                        ),
+                                      ),
+                                    ),
+                                    AQI(
+                                      aqiModel: state.aqiModel!,
+                                      backColor: _timeFrameColors(),
+                                      index: 0,
+                                      width: double.maxFinite,
+                                      height: cardHeight,
+                                    ),
+                                  ],
+                                ),
                         ],
                       ),
                     ],

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_forecast/core/utils/constants.dart';
 import 'package:flutter_forecast/core/utils/log.dart';
+import 'package:flutter_forecast/feature/models/aqi_model.dart';
 import 'package:flutter_forecast/feature/models/weather_model.dart';
 import 'package:http/http.dart' as htp;
 import 'package:geolocator/geolocator.dart';
@@ -22,6 +23,23 @@ class Apis {
     } catch (e) {
       Log.showLog(e.toString());
       return WeatherModel(error: true, reason: e.toString());
+    }
+  }
+
+  static Future<AqiModel> getAQI() async {
+    try {
+      final pos = await Apis.determinePosition();
+      final url = Uri.parse(
+        "$AQI_BASE_URL?latitude=${pos.latitude}&longitude=${pos.longitude}$AQI_URL_FIXED_PARAMS",
+      );
+      final res = await compute(apiIsolate, url);
+      Log.showLog(res.body);
+      return AqiModel.fromJson(
+        json.decode(res.body),
+      );
+    } catch (e) {
+      Log.showLog(e.toString());
+      return AqiModel(error: true, reason: e.toString());
     }
   }
 
