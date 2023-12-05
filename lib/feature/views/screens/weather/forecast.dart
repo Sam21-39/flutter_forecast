@@ -87,7 +87,9 @@ class _ForecastState extends State<Forecast>
               ),
             ),
             Text(
-              "${WeatherCodes.codes[widget.weatherModel.daily!.weatherCode![widget.index]]}",
+              "${WeatherCodes.codes[widget.weatherModel.daily!.weatherCode![widget.index]]}\n",
+              maxLines: 2,
+              overflow: TextOverflow.fade,
               style: TextStyle(
                 fontSize: 20.sp,
                 fontWeight: FontWeight.w700,
