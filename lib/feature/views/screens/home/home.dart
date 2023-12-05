@@ -26,7 +26,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final location = TextEditingController(text: 'FlutterForecast');
+  final location = TextEditingController(text: 'Minimalist Forecast');
   final cardHeight = 360.sp;
   final cardWidth = 200.sp;
 
