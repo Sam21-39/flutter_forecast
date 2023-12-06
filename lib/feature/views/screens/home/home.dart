@@ -467,8 +467,7 @@ class _HomeState extends State<Home> {
                   springAnimationDurationInMilliseconds: 800,
                   showChildOpacityTransition: false,
                   onRefresh: () async {
-                    BlocProvider.of<HomeCubit>(context)
-                        .refresh(state.isForecast);
+                    BlocProvider.of<HomeCubit>(context).refresh();
                     _getUserAddress();
                   },
                   child: ListView(

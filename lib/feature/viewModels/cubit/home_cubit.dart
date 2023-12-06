@@ -51,13 +51,13 @@ class HomeCubit extends Cubit<HomeState> {
     }
   }
 
-  refresh(bool isForecast) async {
+  refresh() async {
     emit(
       HomeState(
           weatherModel: WeatherModel(),
           errorMessage: '',
           isLoading: true,
-          isForecast: isForecast),
+          isForecast: true),
     );
     try {
       final res = await Apis.getWeather();
@@ -67,7 +67,7 @@ class HomeCubit extends Cubit<HomeState> {
             weatherModel: res,
             errorMessage: res.reason!,
             isLoading: false,
-            isForecast: isForecast,
+            isForecast: true,
           ),
         );
       }
@@ -76,7 +76,7 @@ class HomeCubit extends Cubit<HomeState> {
           weatherModel: res,
           errorMessage: '',
           isLoading: false,
-          isForecast: isForecast,
+          isForecast: true,
         ),
       );
     } catch (e) {
@@ -86,7 +86,7 @@ class HomeCubit extends Cubit<HomeState> {
           weatherModel: WeatherModel(error: true, reason: e.toString()),
           errorMessage: e.toString(),
           isLoading: false,
-          isForecast: isForecast,
+          isForecast: true,
         ),
       );
     }

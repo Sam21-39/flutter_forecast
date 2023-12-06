@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_forecast/core/utils/ui_colors.dart';
 import 'package:flutter_forecast/feature/models/aqi_model.dart';
 import 'package:flutter_forecast/feature/views/widgets/loading_text.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
