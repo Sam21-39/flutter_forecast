@@ -41,14 +41,14 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/shared_preferences_foundation/darwin"
 
 SPEC CHECKSUMS:
-  connectivity_plus: bf0076dd84a130856aa636df1c71ccaff908fa1d
-  Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
-  flutter_native_splash: 52501b97d1c0a5f898d687f1646226c1f93c56ef
-  geocoding_ios: a389ea40f6f548de6e63006a2e31bf66ff80769a
-  geolocator_apple: cc556e6844d508c95df1e87e3ea6fa4e58c50401
+  connectivity_plus: 481668c94744c30c53b8895afb39159d1e619bdf
+  Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
+  flutter_native_splash: 9e672d3818957718ee006a491730c09deeecace9
+  geocoding_ios: 86f1c479822f07a2f79f7094f2b753d1e9e20215
+  geolocator_apple: 1d9e8e718b0aee61b8573d2d531eff76d00f383b
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
-  shared_preferences_foundation: 5b919d13b803cadd15ed2dc053125c68730e5126
+  shared_preferences_foundation: 4e65c567e7877037d328829a522222c938bf308c
 
 PODFILE CHECKSUM: 7be2f5f74864d463a8ad433546ed1de7e0f29aef
 
-COCOAPODS: 1.14.3
+COCOAPODS: 1.16.2
