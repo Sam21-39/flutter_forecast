@@ -45,6 +45,7 @@ abstract final class AppTheme {
       navigationRailUseIndicator: true,
       navigationRailLabelType: NavigationRailLabelType.all,
     ),
+    fontFamily: 'NunitoSans',
     visualDensity: FlexColorScheme.comfortablePlatformDensity,
     cupertinoOverrideTheme: const CupertinoThemeData(applyThemeToAll: true),
   );
@@ -77,6 +78,7 @@ abstract final class AppTheme {
       navigationRailUseIndicator: true,
       navigationRailLabelType: NavigationRailLabelType.all,
     ),
+    fontFamily: 'NunitoSans',
     visualDensity: FlexColorScheme.comfortablePlatformDensity,
     cupertinoOverrideTheme: const CupertinoThemeData(applyThemeToAll: true),
   );
