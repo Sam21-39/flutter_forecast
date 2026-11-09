@@ -14,8 +14,8 @@ class ConnCubit extends Cubit<ConnState> {
   Future<void> init() async {
     final Connectivity connectivity = Connectivity();
     connectivity.onConnectivityChanged.listen((event) {
-      if (event == ConnectivityResult.wifi ||
-          event == ConnectivityResult.mobile) {
+      if (event.contains( ConnectivityResult.wifi )||
+          event.contains( ConnectivityResult.mobile)) {
         emit(
           ConnState(
             isConnected: true,
