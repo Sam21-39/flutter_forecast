@@ -32,38 +32,38 @@ dependencies:
     sdk: flutter
 
   # Flutter Specific Dependencies
-  cupertino_icons: ^1.0.2
+  cupertino_icons: ^2.0.0
 
   # Services
-  connectivity_plus: ^5.0.1
-  geocoding: ^2.1.1
-  geolocator: ^10.1.0
-  get_it: ^7.6.4
+  connectivity_plus: ^7.3.1
+  geocoding: ^5.0.1
+  geolocator: ^14.1.2
+  get_it: ^9.3.0
   http: ^1.1.0
   logger: ^2.0.2+1
   shared_preferences: ^2.2.2
 
   # State management
-  flutter_bloc: ^8.1.3
+  flutter_bloc: ^9.1.1
 
   # UI elements
   animated_toggle_switch: ^0.8.0
-  flutter_easyloading: ^3.0.5
+  flutter_easyloading: ^4.0.2
   flutter_native_splash: ^2.3.5
   flutter_screenutil: ^5.9.0
   flutter_staggered_grid_view: ^0.7.0
   flutter_svg: ^2.0.9
   flutter_svg_provider: ^1.0.6
   liquid_pull_to_refresh: ^3.0.1
-  loading_indicator: ^3.1.1
+  loading_indicator: ^4.0.2
 
 dev_dependencies:
   change_app_package_name: ^1.1.0
-  flutter_launcher_icons: ^0.13.1
+  flutter_launcher_icons: ^0.14.4
 
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.0
+  flutter_lints: ^6.0.0
 
 flutter_launcher_icons:
   android: "launcher_icon"

@@ -17,7 +17,7 @@ class HomeCubit extends Cubit<HomeState> {
           ),
         );
 
-  init() async {
+  Future<void> init() async {
     try {
       final res = await Apis.getWeather();
       if (res.error ?? false) {
@@ -51,7 +51,7 @@ class HomeCubit extends Cubit<HomeState> {
     }
   }
 
-  refresh() async {
+  Future<void> refresh() async {
     emit(
       HomeState(
           weatherModel: WeatherModel(),
@@ -92,7 +92,7 @@ class HomeCubit extends Cubit<HomeState> {
     }
   }
 
-  toggleAQI(bool isForecast, WeatherModel wm) async {
+  Future<void> toggleAQI(bool isForecast, WeatherModel wm) async {
     emit(
       HomeState(
         weatherModel: wm,

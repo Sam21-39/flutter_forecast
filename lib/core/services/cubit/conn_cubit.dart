@@ -11,7 +11,7 @@ class ConnCubit extends Cubit<ConnState> {
           errorMessage: '',
         ));
 
-  init() async {
+  Future<void> init() async {
     final Connectivity connectivity = Connectivity();
     connectivity.onConnectivityChanged.listen((event) {
       if (event == ConnectivityResult.wifi ||

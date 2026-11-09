@@ -4,10 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:flutter_forecast/core/services/apis/apis.dart';
 import 'package:flutter_forecast/core/utils/codes.dart';
 import 'package:flutter_forecast/core/utils/constants.dart';
-import 'package:flutter_forecast/core/utils/log.dart';
 import 'package:flutter_forecast/core/utils/ui_colors.dart';
 import 'package:flutter_forecast/core/widgets/base_scaffold.dart';
 import 'package:flutter_forecast/feature/models/weather_model.dart';
@@ -17,8 +15,6 @@ import 'package:flutter_forecast/feature/views/screens/weather/forecast.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:geocoding/geocoding.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
 class Home extends StatefulWidget {
@@ -39,14 +35,11 @@ class _HomeState extends State<Home> {
     super.initState();
   }
 
-  _getUserAddress() async {
-    final Position position = await Apis.determinePosition();
-    List<Placemark> placemarks = await placemarkFromCoordinates(
-      position.latitude,
-      position.longitude,
-    );
-    Log.showLog(placemarks.toString());
-    location.text = placemarks.first.locality.toString();
+  Future<void> _getUserAddress() async {
+    // final Position position = await Apis.determinePosition();
+   
+    // Log.showLog(placemarks.toString());
+    location.text = 'kolkata';
     // setState(() {});
   }
 
@@ -63,7 +56,7 @@ class _HomeState extends State<Home> {
   }
 
   // base colors
-  _colors() {
+  List<Color> _colors() {
     return [
       Colors.white,
       Colors.black87,
@@ -72,7 +65,7 @@ class _HomeState extends State<Home> {
 
   // weather images
 
-  _wetherImages(bool isDay, int code) {
+  String _wetherImages(bool isDay, int code) {
     switch (code) {
       case 0 || 1:
         return isDay ? SUNLIGHT : MOONLIGHT;
@@ -100,7 +93,7 @@ class _HomeState extends State<Home> {
 
   // ----------------------------------------------------------------
   // time variants
-  _timeFrameColors() {
+  Color _timeFrameColors() {
     final time = DateTime.now().toLocal();
     if (time.hour >= 4 && time.hour < 6) {
       return Colors.red.shade200;
@@ -132,7 +125,7 @@ class _HomeState extends State<Home> {
     return UIColors.overall;
   }
 
-  _timeFrame() {
+  String _timeFrame() {
     final time = DateTime.now().toLocal();
     if (time.hour >= 4 && time.hour < 6) {
       return 'Early Morning';
@@ -166,7 +159,7 @@ class _HomeState extends State<Home> {
 
   //---------------------------------------------
 
-  _wweatherDetailsUI(BuildContext context, WeatherModel weatherModel) {
+  Row _wweatherDetailsUI(BuildContext context, WeatherModel weatherModel) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       mainAxisSize: MainAxisSize.max,
@@ -251,7 +244,7 @@ class _HomeState extends State<Home> {
     );
   }
 
-  _currentWeatherDetailsUI(BuildContext context, WeatherModel weatherModel) {
+  SizedBox _currentWeatherDetailsUI(BuildContext context, WeatherModel weatherModel) {
     return SizedBox(
       width: double.maxFinite,
       // height: 350.h,
@@ -280,7 +273,7 @@ class _HomeState extends State<Home> {
     );
   }
 
-  _weatherUI(BuildContext context, WeatherModel weatherModel) {
+  Row _weatherUI(BuildContext context, WeatherModel weatherModel) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       mainAxisSize: MainAxisSize.max,
@@ -360,7 +353,7 @@ class _HomeState extends State<Home> {
                     style: TextStyle(
                       fontSize: 16.sp,
                       fontWeight: FontWeight.w400,
-                      color: Colors.white.withOpacity(0.65),
+                      color: Colors.white.withValues(alpha: 0.65),
                     ),
                   ),
                 ],
@@ -372,7 +365,7 @@ class _HomeState extends State<Home> {
     );
   }
 
-  _currentWeatherUI(BuildContext context, WeatherModel weatherModel) {
+  SizedBox _currentWeatherUI(BuildContext context, WeatherModel weatherModel) {
     return SizedBox(
       width: double.maxFinite,
       // height: 350.h,
@@ -422,7 +415,7 @@ class _HomeState extends State<Home> {
     );
   }
 
-  _blocLogic(BuildContext context) {
+  BlocConsumer<HomeCubit, HomeState> _blocLogic(BuildContext context) {
     return BlocConsumer<HomeCubit, HomeState>(
       listener: (context, state) {
         if (!state.isLoading &&

@@ -75,7 +75,7 @@ class Apis {
   }
 }
 
-apiIsolate(Uri url) async {
+Future<htp.Response> apiIsolate(Uri url) async {
   final http = htp.Client();
 
   return await http.get(url);

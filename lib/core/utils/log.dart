@@ -1,7 +1,7 @@
 import 'package:logger/logger.dart';
 
 class Log {
-  static showLog(String log) {
+  static void showLog(String log) {
     final Logger logger = Logger();
     return logger.d(
       log,

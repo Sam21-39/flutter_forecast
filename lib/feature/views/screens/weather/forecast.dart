@@ -175,7 +175,7 @@ class _ForecastState extends State<Forecast>
   }
 
   // weather images
-  _wetherImages(bool isDay, int code) {
+  String _wetherImages(bool isDay, int code) {
     switch (code) {
       case 0 || 1:
         return isDay ? SUNLIGHT : MOONLIGHT;
